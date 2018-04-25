@@ -2,6 +2,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,17 +38,16 @@ public class samsStore {
             String url;
             StringBuilder urlCreate = new StringBuilder();
             urlCreate.append(samsUrl).append(str).append(samsEndTag);
-            url  = urlCreate.toString();
+            url = urlCreate.toString();
             url = url.replaceAll(" ", "%20");
 
             System.out.println("**** " + url + " ****");
-            Document doc = Jsoup.connect(url).userAgent("Chrome/65.0.3325.181").get();
-            Element divContent = doc.select("span.hubbleTrackRecord[data-price]").first();
-            //String elem = divContent.attr("aria-label");
-            System.out.println(divContent.text().replace("$",""));
-//            System.out.println(price);
-//            shoppingCart.put(str, price);
-//            totalCost +=price;
+            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36").get();
+            String divContentAttr = doc.select("span.hubbleTrackRecord.collapse").attr("data-price");
+            Double price = Double.parseDouble(divContentAttr);
+            //System.out.println("price = " + divContentAttr);
+            shoppingCart.put(str, price);
+            totalCost += price;
 
         }
 
