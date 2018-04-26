@@ -31,13 +31,15 @@ public class walmartStore {
         String walmartUrl ="https://www.walmart.com/search/?query=";
         String walmartEndTag = "&cat_id=0";
         shoppingCart = new HashMap();
+        String url;
+        StringBuilder urlCreate = new StringBuilder();
+        BufferedWriter writer;
 
 
 
         // Iterate through each item in the list and add to shopping cart
         for(String str : list){
-            String url;
-            StringBuilder urlCreate = new StringBuilder();
+
             urlCreate.append(walmartUrl).append(str).append(walmartEndTag);
             url = urlCreate.toString();
             url = url.replaceAll(" ", "%20");
@@ -46,7 +48,7 @@ public class walmartStore {
             System.out.println("**** " + url + " ****");
             Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
                     .get();
-            BufferedWriter writer;
+
 
             try{
                 writer = new BufferedWriter( new FileWriter("walmart.html"));
@@ -64,8 +66,6 @@ public class walmartStore {
                 while(scan.hasNextLine()){
                     String line = scan.nextLine();
                     if(line.contains("offerPrice")){
-//                        int num = line.indexOf("offerPrice");
-//                        System.out.println("# " + num);
                         String s = line.substring(line.indexOf("offerPrice\":"+1));
                         s = s.substring(s.indexOf(":")+1);
                         s = s.substring(0, s.indexOf(","));
@@ -85,12 +85,9 @@ public class walmartStore {
 
 
             {
-                String test = doc.select("span.Price-group").attr("aria-label");
+               // String test = doc.select("span.Price-group").attr("aria-label");
             }
-            //System.out.println("test = " + test);
-            //            System.out.println(price);
-//            shoppingCart.put(str, price);
-//            totalCost +=price;
+
 
         }
 
